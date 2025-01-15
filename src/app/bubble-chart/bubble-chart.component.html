@@ -1,0 +1,24 @@
+<div class="header">
+  <h2>&lt; Comparació de característiques / &gt;</h2>
+</div>
+<p>
+  Aquest <strong>diagrama de bombolles</strong> analitza les relacions entre dues característiques musicals,
+  com ara <em>dansabilitat</em>, <em>energia</em>, o <em>valència</em>. Cada bombolla representa una cançó
+  del conjunt de dades i està situada segons les puntuacions de la cançó en aquestes dues dimensions.
+</p>
+
+<p>
+  El radi de cada bombolla es relaciona amb la <strong>popularitat</strong> de la cançó, la qual cosa permet
+  identificar cançons més rellevants dins dels gèneres seleccionats i també visualitzar patrons
+  com la correlació entre característiques musicals o com aquestes varien segons el gènere.
+</p>
+
+<div class="charts">
+  <div class="chart-grid">
+    <div class="chart-container" *ngFor="let pair of characteristicPairs">
+      <h3>{{ pair.x }} vs {{ pair.y }}</h3>
+      <div class="chart"></div>
+    </div>
+    <div class="legend"></div>
+  </div>
+</div>

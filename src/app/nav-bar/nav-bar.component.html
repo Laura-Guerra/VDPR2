@@ -1,0 +1,27 @@
+<mat-toolbar>
+    <div class="mat-toolbar-wrapper">
+        <div class="logo">
+            <p routerLink="">PR 2. VISUALITZACIÓ DE DADES</p>
+        </div>
+        <div class="menus">
+           
+            <div class="hamburger-menu">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu" xPosition="before">
+                    <button routerLink="home" mat-menu-item class="menu-style">
+                        <span>Home</span>
+                    </button>
+                <button routerLink="data" mat-menu-item class="menu-style">
+                    <span>Data Table</span>
+                </button>
+                <button routerLink="fonts" mat-menu-item class="menu-style">
+                    <span>Fonts</span>
+                </button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+</mat-toolbar>
+

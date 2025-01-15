@@ -1,0 +1,27 @@
+<div class="heatmap-wrapper">
+  <div class="header">
+    <h2>
+      &lt; Popularitat de la Cançó vs. Popularitat de l'Artista / &gt;
+    </h2>
+  </div>
+  <div class="heatmap-description" style="text-align: start; padding:25px;">
+    <p>
+      Aquest <strong>heatmap</strong> permet veure si hi ha una relació entre la popularitat de les cançons i 
+      la popularitat dels artistes que les interpreten. Per a cada cançó, <strong>s'ha seleccionat la popularitat més alta dels artistes que hi participen</strong>.
+    </p>
+    <p>
+      Cada cel·la del heatmap representa una combinació de popularitat de la cançó i de l'artista,
+      utilitzant una escala de colors per mostrar la densitat de cançons en aquesta combinació.
+      Això permet identificar patrons interessants, com gèneres on la popularitat dels artistes
+      tendeix a influir significativament en la popularitat de les seves cançons.
+    </p>
+  </div>
+  <div class="heatmap-content">
+    <div *ngFor="let genre of genres" class="heatmap-container">
+      <h3>{{ genre }}</h3>
+      <div [id]="'heatmap-' + genre" class="heatmap"></div>
+    </div>
+    
+
+  </div>
+</div>

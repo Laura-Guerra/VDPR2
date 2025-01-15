@@ -1,0 +1,59 @@
+@import "../../styles.scss";
+
+.filters {
+  position: fixed;
+  top: calc(10vh + 50px); /* Just sota el botó */
+  right: 20px;
+  z-index: 1000;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+
+  .filter-section {
+    margin-bottom: 20px;
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .genre-checkboxes {
+      max-height: 150px;
+      overflow-y: auto;
+      label {
+        font-size: 14px;
+        display: flex;
+
+        input {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  h3 {
+    margin-bottom: 10px;
+  }
+
+  button {
+    border: 2px solid $color-black;
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-family: $font-mono;
+    background-color: transparent;
+    font-size: calc(8px + (20 - 14) * ((100vw - 320px) / (1920 - 320)));
+    padding: 6px 14px;
+    cursor: pointer;
+    &:hover {
+      background-color: $color-black;
+      color: #fff;
+      font-weight: 700;
+    }
+  }
+}
