@@ -1,6 +1,5 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import * as d3 from 'd3';
-import { DataService } from '../services/data.service';
 import { ITrack } from '../interfaces/track.interface';
 
 @Component({
@@ -8,26 +7,32 @@ import { ITrack } from '../interfaces/track.interface';
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.scss'],
 })
-export class BarChartComponent implements OnInit {
+export class BarChartComponent implements OnInit, OnChanges {
   @ViewChild('chart', { static: true }) chartContainer!: ElementRef;
-  data: ITrack[] = [];
-  filteredData: ITrack[] = []; // Dades filtrades
-  filtersEnabled: boolean = true; // Estat del checkbox
+  @Input() data: ITrack[] = [];
+  @Input() filtersEnabled: boolean = false; // Permet habilitar/deshabilitar filtres
+  @Input() popularity: number = 50;
 
-  constructor(private dataService: DataService) {}
+  filteredData: ITrack[] = [];
 
   ngOnInit(): void {
-    this.dataService.getTracks().subscribe((tracks) => {
-      this.data = tracks;
-      this.applyFilters(); // Filtrar les dades inicialment
-    });
+    this.applyFilters();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data'] || changes['popularity'] || changes['filtersEnabled']) {
+      this.applyFilters();
+    }
   }
 
   applyFilters(): void {
-    this.filteredData = this.filtersEnabled
-      ? this.data.filter((track) => track.popularity >= 50) // Ex: Filtrar popularitat > 50
-      : [...this.data]; // Sense filtres
-
+    if (this.filtersEnabled) {
+      this.filteredData = this.data.filter(
+        (track) => track.popularity >= this.popularity
+      );
+    } else {
+      this.filteredData = [...this.data];
+    }
     this.createChart();
   }
 
@@ -37,7 +42,6 @@ export class BarChartComponent implements OnInit {
     const width = 625 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
-    // Preprocessar les dades per comptar les cançons per gènere
     const genreCounts = this.filteredData.reduce((acc, track) => {
       acc[track.track_genre] = (acc[track.track_genre] || 0) + 1;
       return acc;
@@ -85,18 +89,6 @@ export class BarChartComponent implements OnInit {
       .attr('y', -margin.left + 15)
       .text('Nombre de Cançons');
 
-    const tooltip = d3
-      .select(element)
-      .append('div')
-      .style('position', 'absolute')
-      .style('background', '#fff')
-      .style('border', '1px solid #ccc')
-      .style('padding', '5px 10px')
-      .style('border-radius', '5px')
-      .style('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.1)')
-      .style('pointer-events', 'none')
-      .style('visibility', 'hidden');
-
     svg
       .selectAll('.bar')
       .data(genres)
@@ -107,24 +99,6 @@ export class BarChartComponent implements OnInit {
       .attr('y', (d) => yScale(genreCounts[d]))
       .attr('width', xScale.bandwidth())
       .attr('height', (d) => height - yScale(genreCounts[d]))
-      .attr('fill', '#69b3a2')
-      .on('mouseover', (event, d) => {
-        tooltip
-          .style('visibility', 'visible')
-          .text(`${d}: ${genreCounts[d]} cançons`);
-      })
-      .on('mousemove', (event) => {
-        tooltip
-          .style('top', `${event.pageY - 40}px`)
-          .style('left', `${event.pageX + 10}px`);
-      })
-      .on('mouseout', () => {
-        tooltip.style('visibility', 'hidden');
-      });
-  }
-
-  toggleFilters(): void {
-    this.filtersEnabled = !this.filtersEnabled;
-    this.applyFilters();
+      .attr('fill', '#69b3a2');
   }
 }
